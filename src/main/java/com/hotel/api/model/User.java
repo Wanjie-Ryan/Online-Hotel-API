@@ -27,7 +27,8 @@ public class User {
     private User_Role role;
 
     // define the relation the user has to the Orders table
-    @OneToMany
+    // the mappedBy tells spring boot that it should not create a new table for the orders but rather use the orders table that has already been defined
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
     // the json ignore is used to ignore the orders field when we are getting the users, a separate call will be made to fetch the orders
     @JsonIgnore
     private List<Order> orders = new ArrayList<>();
@@ -39,6 +40,14 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     // the purpose for the cascade is that lets say the user is deleted, then all the addresses related to that user will be deleted too.
     private List<Address> addresses = new ArrayList<>();
+
+    @PrePersist
+
+    public void generateId(){
+        if(this.id == null){
+            this.id = UUID.randomUUID();
+        }
+    }
 
 
 
