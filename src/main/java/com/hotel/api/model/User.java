@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 @Entity // map this java class to our user table in the db.
@@ -23,6 +24,7 @@ public class User {
     private String email;
     private String password;
     private User_Role role;
+    private List<Order> orders = new ArrayList<>();
 
 
 
