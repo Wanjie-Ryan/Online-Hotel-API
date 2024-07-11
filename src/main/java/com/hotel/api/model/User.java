@@ -35,6 +35,11 @@ public class User {
     @ElementCollection
     private List<RestaurantDto> favorites = new ArrayList<>();
 
+    // we will store the addresses of the users such that the user will not have to input the address again when he wants to make an order again
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    // the purpose for the cascade is that lets say the user is deleted, then all the addresses related to that user will be deleted too.
+    private List<Address> addresses = new ArrayList<>();
+
 
 
 
