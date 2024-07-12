@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -26,6 +28,14 @@ public class Restaurant {
 
     @OneToOne
     private Address address;
+
+    @Embedded
+    private ContactInformation contactInformation;
+
+    private String openingHours;
+
+    @OneToMany(mappedBy = "restaurant")
+    private List<Order> orders = new ArrayList<>();
 
     @PrePersist
 
