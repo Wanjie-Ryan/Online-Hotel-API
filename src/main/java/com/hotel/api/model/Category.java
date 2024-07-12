@@ -1,9 +1,7 @@
 package com.hotel.api.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,6 +18,14 @@ public class Category {
 
     @Id
     private UUID id;
+
+    private String name;
+
+    @ManyToOne
+    @JsonIgnore
+    private Restaurant restaurant;
+
+
 
     @PrePersist
 

@@ -27,6 +27,8 @@ public class IngredientsItem {
     @ManyToOne
     private Restaurant restaurant;
 
+    private boolean inStoke = true;
+
 
 
     @PrePersist
