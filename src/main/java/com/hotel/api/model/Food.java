@@ -2,24 +2,23 @@ package com.hotel.api.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
 @Entity
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderItem {
-
+@Table (name="food")
+public class Food {
 
     @Id
     private UUID id;
-
-    @ManyToOne
-    private Food food;
 
 
     @PrePersist
@@ -29,4 +28,5 @@ public class OrderItem {
             this.id = UUID.randomUUID();
         }
     }
+
 }
