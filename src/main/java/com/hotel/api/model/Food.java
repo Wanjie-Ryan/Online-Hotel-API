@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -23,6 +24,12 @@ public class Food {
 
     @ManyToOne
     private Category foodCategory;
+
+    @Column(length = 1000)
+    @ElementCollection // by defining the element collection, it will somehow create a new table for the images
+    private List<String> images;
+
+    private boolean available;
 
 
     @PrePersist
