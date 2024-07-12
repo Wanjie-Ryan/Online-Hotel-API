@@ -20,6 +20,11 @@ public class IngredientsItem {
     @Id
     private UUID id;
 
+    private String name;
+    private IngredientCategory category;
+
+
+
     @PrePersist
 
     public void generateId(){
