@@ -7,6 +7,7 @@ import jakarta.persistence.PrePersist;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -20,6 +21,12 @@ public class OrderItem {
 
     @ManyToOne
     private Food food;
+
+    private int quantity;
+
+    private Long totalPrice;
+
+    private List<String> ingredients;
 
 
     @PrePersist

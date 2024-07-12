@@ -1,9 +1,6 @@
 package com.hotel.api.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,6 +16,13 @@ public class Food {
 
     @Id
     private UUID id;
+
+    private String name;
+    private String description;
+    private Long price;
+
+    @ManyToOne
+    private Category foodCategory;
 
 
     @PrePersist
