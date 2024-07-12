@@ -25,6 +25,7 @@ public class IngredientCategory {
     @ManyToOne // one restaurant can have multiple ingredient categories
     private Restaurant restaurant;
 
+    @OneToMany(mappedBy ="category", cascade = CascadeType.ALL)
     private List<IngredientsItem> ingredients = new ArrayList<>();
 
     @PrePersist
