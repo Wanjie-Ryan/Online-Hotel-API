@@ -33,14 +33,24 @@ public class User {
     @JsonIgnore
     private List<Order> orders = new ArrayList<>();
 
+    // Specifies a collection of basic or embeddable
+    // The favorites field is annotated with @ElementCollection, meaning it is a collection of RestaurantDto objects that are stored in a separate table, but their lifecycle is tied to the User entity.
+    //When a User entity is persisted, the favorites collection is also persisted.
+    //If a User entity is deleted, the favorites collection is also deleted.types.
     @ElementCollection
+
+    //Yes, you can use @OneToMany if RestaurantDto represents an entity with its own identity. 
+
     private List<RestaurantDto> favorites = new ArrayList<>();
 
-    // we will store the addresses of the users such that the user will not have to input the address again when he wants to make an order again
+    // we will store the addresses of the users such that the user will not have to input the address again when he wants to make an order again.
+    // cascade options define the operations to propagate from parent to child entities.
+    //orphanRemoval ensures that child entities are deleted if they are no longer referenced by the parent entity.
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     // the purpose for the cascade is that lets say the user is deleted, then all the addresses related to that user will be deleted too.
     private List<Address> addresses = new ArrayList<>();
 
+    // This method is called before the entity is persisted (saved) to the database.
     @PrePersist
 
     public void generateId(){
