@@ -38,13 +38,13 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         // check if role is null, if it is, then assign the role of customer to the user
 
-        if(role == null) role = User_Role.Customer;
+//        if(role == null) role = User_Role.Customer;
 
         List<GrantedAuthority> auth = new ArrayList<>();
 
         auth.add(new SimpleGrantedAuthority(role.toString()));
 
 
-        return null;
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), auth);
     }
 }
