@@ -1,5 +1,6 @@
 package com.hotel.api.config;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -7,7 +8,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
+
+import java.util.Arrays;
 
 //configuring spring security in the AppConfig for user authentication.
 // it is a configuration class therefore annotate it with configuration.
@@ -29,8 +33,24 @@ public class AppConfig {
         return null;
     }
 
-    // cors functionality.
+    // cors functionality, passing in the routes that will communicate with the BE
     private CorsConfigurationSource corsConfigurationSource() {
+
+        return new CorsConfigurationSource() {
+            @Override
+            public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+
+                CorsConfiguration cfg = new CorsConfiguration();
+                cfg.setAllowedOrigins(Arrays.asList(
+                        "http://localhost:3000",
+                        "http://localhost:3001"
+                ));
+
+
+                return null;
+            }
+        };
+
     }
 
 
