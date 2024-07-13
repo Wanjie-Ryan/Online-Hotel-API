@@ -24,7 +24,8 @@ public class User {
     private String name;
     private String email;
     private String password;
-    private User_Role role;
+    // in the role, we will give a default role of customer
+    private User_Role role = User_Role.Customer;
 
     // define the relation the user has to the Orders table
     // the mappedBy tells spring boot that it should not create a new table for the orders but rather use the orders table that has already been defined
