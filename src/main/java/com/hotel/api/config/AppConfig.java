@@ -33,7 +33,7 @@ public class AppConfig {
         // the add filter before method checks whether the user has provided a jwt token or not
         http.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).authorizeHttpRequests(Authorize -> Authorize.requestMatchers("/api/admin/**").hasAnyRole("Owner", "Admin").requestMatchers("/api/**").authenticated().anyRequest().permitAll()).addFilterBefore(new JwtTokenValidator(), BasicAuthenticationFilter.class).csrf(csrf-> csrf.disable()).cors(cors-> cors.configurationSource(corsConfigurationSource()));
 
-        return null;
+        return http.build();
     }
 
     // cors functionality, passing in the routes that will communicate with the BE

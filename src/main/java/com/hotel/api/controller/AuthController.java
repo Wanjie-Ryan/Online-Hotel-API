@@ -92,6 +92,7 @@ public class AuthController {
 
     /// LOGIN FUNCTION
 
+    @PostMapping("/login")
     public ResponseEntity<AuthResponse> login (@RequestBody LoginRequest req){
 
         String email = req.getEmail();
@@ -100,6 +101,7 @@ public class AuthController {
         // checking for the authentication here via another function
         Authentication auths = authentication(email, password);
 
+        // getting the authorities of the users
         Collection<? extends GrantedAuthority> authorities = auths.getAuthorities();
         String role = authorities.isEmpty()?null:authorities.iterator().next().getAuthority();
         // if the auth is valid then generate the token
