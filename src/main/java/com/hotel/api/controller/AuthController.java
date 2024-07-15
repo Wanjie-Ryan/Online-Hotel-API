@@ -13,9 +13,11 @@ import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -88,9 +90,32 @@ public class AuthController {
 
     public ResponseEntity<AuthResponse> login (@RequestBody LoginRequest req){
 
+        String email = req.getEmail();
+        String password = req.getPassword();
+
+        
+        Authentication auths = authentication(email, password);
+
+
         return null;
     }
 
+    private Authentication authentication(String email, String password) {
+
+        // user details comes from spring security
+
+        UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+
+       if(userDetails == null){
+           throw new BadCredentialsException("Invalid email");
+       }
+
+       // checking if the password matches
+
+        if(!pwdEncoder.matches(password, userDetails.getPassword())){
+            throw new BadCredentialsException("Invalid password");
+        }
+    }
 
 
 }
