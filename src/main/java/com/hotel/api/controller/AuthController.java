@@ -6,6 +6,7 @@ import com.hotel.api.model.Cart;
 import com.hotel.api.model.User;
 import com.hotel.api.repository.CartRepository;
 import com.hotel.api.repository.UserRepository;
+import com.hotel.api.request.LoginRequest;
 import com.hotel.api.response.AuthResponse;
 import com.hotel.api.service.CustomUserDetailsService;
 import org.apache.coyote.Response;
@@ -85,7 +86,10 @@ public class AuthController {
 
     /// LOGIN FUNCTION
 
-    public ResponseEntity<AuthResponse> login (@RequestBody)
+    public ResponseEntity<AuthResponse> login (@RequestBody LoginRequest req){
+
+        return null;
+    }
 
 
 
