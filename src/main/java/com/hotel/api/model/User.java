@@ -2,6 +2,7 @@ package com.hotel.api.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hotel.api.dto.RestaurantDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -23,6 +24,8 @@ public class User {
     private UUID id;
     private String name;
     private String email;
+    // making the password not to be sent as a response back to the user for security reasons obv
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     // in the role, we will give a default role of customer
     private User_Role role = User_Role.Customer;
