@@ -67,6 +67,7 @@ public class AuthController {
         //principal: Typically the username or email.
         //credentials: The password.
         //authorities (optional): A collection of granted authorities or roles.
+        //The UsernamePasswordAuthenticationToken class in Spring Security is a convenient way to create an Authentication object for username and password-based authentication. This object can be used to authenticate a user in a Spring Security context.
         Authentication auths = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
         SecurityContextHolder.getContext().setAuthentication(auths);
         String jwt = jwtProvider.generatedToken(auths);
@@ -80,6 +81,11 @@ public class AuthController {
         return new ResponseEntity<>(authRes, HttpStatus.CREATED);
 
     }
+
+
+    /// LOGIN FUNCTION
+
+    public ResponseEntity<AuthResponse> login (@RequestBody)
 
 
 
