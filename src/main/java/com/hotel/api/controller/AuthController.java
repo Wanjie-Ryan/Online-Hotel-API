@@ -4,6 +4,7 @@ package com.hotel.api.controller;
 import com.hotel.api.config.JwtProvider;
 import com.hotel.api.model.Cart;
 import com.hotel.api.model.User;
+import com.hotel.api.model.User_Role;
 import com.hotel.api.repository.CartRepository;
 import com.hotel.api.repository.UserRepository;
 import com.hotel.api.request.LoginRequest;
@@ -16,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,6 +25,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Collection;
 
 @RestController
 @RequestMapping("/auth")
@@ -93,11 +97,27 @@ public class AuthController {
         String email = req.getEmail();
         String password = req.getPassword();
 
-        
+        // checking for the authentication here via another function
         Authentication auths = authentication(email, password);
 
+        Collection<? extends GrantedAuthority> authorities = auths.getAuthorities();
+        String role = authorities.isEmpty()?null:authorities.iterator().next().getAuthority();
+        // if the auth is valid then generate the token
 
-        return null;
+        String jwt = jwtProvider.generatedToken(auths);
+
+        AuthResponse authRes = new AuthResponse();
+        authRes.setJwt(jwt);
+        authRes.setMessage("User Login Successful");
+        // getting the roles of the users
+
+        authRes.setRole(User_Role.valueOf(role));
+
+
+        return new ResponseEntity<>(authRes, HttpStatus.OK);
+
+
+
     }
 
     private Authentication authentication(String email, String password) {
@@ -115,6 +135,8 @@ public class AuthController {
         if(!pwdEncoder.matches(password, userDetails.getPassword())){
             throw new BadCredentialsException("Invalid password");
         }
+
+        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
 
 
