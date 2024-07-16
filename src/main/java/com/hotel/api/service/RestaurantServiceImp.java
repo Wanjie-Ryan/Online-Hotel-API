@@ -1,13 +1,16 @@
 package com.hotel.api.service;
 
 import com.hotel.api.dto.RestaurantDto;
+import com.hotel.api.model.Address;
 import com.hotel.api.model.Restaurant;
 import com.hotel.api.model.User;
+import com.hotel.api.repository.AddressRepository;
 import com.hotel.api.repository.RestaurantRepository;
 import com.hotel.api.request.CreateRestaurantRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,9 +21,29 @@ public class RestaurantServiceImp implements RestaurantService {
     @Autowired
     private RestaurantRepository restaurantRepo;
 
+    @Autowired
+    private AddressRepository addressRepo;
+
+    @Autowired
+    private UserService userService;
+
     @Override
     public Restaurant createRestaurant(CreateRestaurantRequest req, User user) {
-        return null;
+
+        Address address = addressRepo.save(req.getAddress());
+        Restaurant restaurant = new Restaurant();
+        restaurant.setAddress(address);
+        restaurant.setContactInformation(req.getContactInformation());
+        restaurant.setCuisineType(req.getCuisineType());
+        restaurant.setDescription(req.getDescription());
+        restaurant.setImages(req.getImages());
+        restaurant.setName(req.getName());
+        restaurant.setOpeningHours(req.getOpeningHours());
+        restaurant.setRegistrationDate(LocalDateTime.now());
+        restaurant.setOwner(user);
+
+
+        return restaurantRepo.save(restaurant);
     }
 
     @Override
