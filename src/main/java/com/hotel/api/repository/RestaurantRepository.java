@@ -1,10 +1,12 @@
 package com.hotel.api.repository;
 
 import com.hotel.api.model.Restaurant;
-import com.hotel.api.model.User;
-import com.hotel.api.request.CreateRestaurantRequest;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface RestaurantRepository {
+import java.util.UUID;
 
-    public Restaurant createRestaurant(CreateRestaurantRequest req, User user);
+public interface RestaurantRepository extends JpaRepository<Restaurant, UUID> {
+
+
+
 }
