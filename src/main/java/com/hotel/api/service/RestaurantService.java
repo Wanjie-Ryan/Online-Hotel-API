@@ -23,7 +23,7 @@ public interface RestaurantService {
     public List<Restaurant> getAllRestaurants();
 
     // SEARCHING A RESTAURANT
-    public List<Restaurant> searchRestaurant();
+    public List<Restaurant> searchRestaurant(String keyword);
 
     // FINDING THE RESTAURANT BY ITS ID
 

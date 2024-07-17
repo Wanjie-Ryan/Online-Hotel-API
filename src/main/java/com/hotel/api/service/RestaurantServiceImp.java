@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 // this class implements the RestaurantService interface
@@ -75,26 +76,41 @@ public class RestaurantServiceImp implements RestaurantService {
 
         Restaurant restaurant = findRestaurantById(id);
 
+        restaurantRepo.delete(restaurant);
+
+        // it is a void method therefore returns nothing
 
     }
 
     @Override
     public List<Restaurant> getAllRestaurants() {
-        return List.of();
+        return restaurantRepo.findAll();
     }
 
     @Override
-    public List<Restaurant> searchRestaurant() {
-        return List.of();
+    public List<Restaurant> searchRestaurant(String keyword) {
+        return restaurantRepo.findBySearchQuery(keyword);
     }
 
     @Override
     public Restaurant findRestaurantById(UUID id) throws Exception {
-        return null;
+
+        Optional <Restaurant> restaurant = restaurantRepo.findById(id);
+
+        if(restaurant.isEmpty()){
+            throw new Exception("Restaurant of the id " + id + " not found");
+        }
+
+
+        return restaurant.get();
     }
 
     @Override
     public Restaurant getRestaurantByUserId(UUID userId) throws Exception {
+
+
+
+
         return null;
     }
 
