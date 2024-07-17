@@ -1,5 +1,6 @@
 package com.hotel.api.controller;
 
+import com.hotel.api.dto.RestaurantDto;
 import com.hotel.api.model.Restaurant;
 import com.hotel.api.model.User;
 import com.hotel.api.service.RestaurantService;
@@ -53,6 +54,15 @@ public class UserRestaurantController {
 
         return new ResponseEntity<>(hotel, HttpStatus.OK);
 
+    }
+
+    // adding a hotel to favorites
+    @PutMapping("/{id}/add-favorites")
+    public ResponseEntity<RestaurantDto> addToFavorites(@PathVariable("id") UUID id, @RequestHeader("Authorization") String jwt)throws Exception{
+        User user = userService.findUserByJwt(jwt);
+        RestaurantDto fav = hotelService.addToFavorites(id, user);
+
+        return new ResponseEntity<>(fav, HttpStatus.OK);
     }
 
 
