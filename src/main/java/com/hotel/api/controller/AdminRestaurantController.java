@@ -53,7 +53,7 @@ public class AdminRestaurantController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<MessageResponse> deleteHotel(@PathVariable("id") UUID id, @RequestHeader("Authorization") String jwt, @RequestBody CreateRestaurantRequest req) throws Exception{
+    public ResponseEntity<MessageResponse> deleteHotel(@PathVariable("id") UUID id, @RequestHeader("Authorization") String jwt) throws Exception{
         User user = userService.findUserByJwt(jwt);
         restaurantService.deleteRestaurant(id);
         MessageResponse response = new MessageResponse();
