@@ -6,6 +6,7 @@ import com.hotel.api.model.Restaurant;
 import com.hotel.api.model.User;
 import com.hotel.api.repository.AddressRepository;
 import com.hotel.api.repository.RestaurantRepository;
+import com.hotel.api.repository.UserRepository;
 import com.hotel.api.request.CreateRestaurantRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,9 @@ public class RestaurantServiceImp implements RestaurantService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserRepository userRepo;
 
     // CREATING  A RESTAURANT
     @Override
@@ -108,15 +112,36 @@ public class RestaurantServiceImp implements RestaurantService {
     @Override
     public Restaurant getRestaurantByUserId(UUID userId) throws Exception {
 
+        // finding the restaurant by the owner id
+        Restaurant restaurant = restaurantRepo.findByOwnerId(userId);
+        if(restaurant == null){
+            throw new Exception ("Restaurant with the owner id " + userId + " not found");
+        }
 
 
-
-        return null;
+        return restaurant;
     }
 
     @Override
     public RestaurantDto addToFavorites(UUID restaurantId, User user) throws Exception {
-        return null;
+
+        Restaurant restaurant = findRestaurantById(restaurantId);
+        RestaurantDto dto = new RestaurantDto();
+        dto.setDescription(restaurant.getDescription());
+        dto.setImages(restaurant.getImages());
+        dto.setTitle(restaurant.getName());
+        dto.setId(restaurantId);
+
+        if(user.getFavorites().contains(dto)){
+            user.getFavorites().remove(dto);
+        }
+        else{
+            user.getFavorites().add(dto);
+        }
+
+        userRepo.save(user);
+
+        return dto;
     }
 
     @Override
