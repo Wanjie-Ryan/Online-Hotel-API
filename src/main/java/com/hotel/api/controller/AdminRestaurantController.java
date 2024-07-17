@@ -3,6 +3,7 @@ package com.hotel.api.controller;
 import com.hotel.api.model.Restaurant;
 import com.hotel.api.model.User;
 import com.hotel.api.request.CreateRestaurantRequest;
+import com.hotel.api.response.MessageResponse;
 import com.hotel.api.service.RestaurantService;
 import com.hotel.api.service.RestaurantServiceImp;
 import com.hotel.api.service.UserService;
@@ -50,5 +51,38 @@ public class AdminRestaurantController {
         return new ResponseEntity<>(hotel, HttpStatus.OK);
 
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<MessageResponse> deleteHotel(@PathVariable("id") UUID id, @RequestHeader("Authorization") String jwt, @RequestBody CreateRestaurantRequest req) throws Exception{
+        User user = userService.findUserByJwt(jwt);
+        restaurantService.deleteRestaurant(id);
+        MessageResponse response = new MessageResponse();
+        response.setMessage("Hotel deleted successfully");
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    // update hotel status
+    @PutMapping("/{id}/status")
+
+    public ResponseEntity<Restaurant> updateHotelStatus(@PathVariable("id") UUID id, @RequestHeader("Authorization") String jwt, @RequestBody CreateRestaurantRequest req) throws Exception{
+
+        User user = userService.findUserByJwt(jwt);
+        Restaurant hotel = restaurantService.updateRestaurantStatus(id);
+        return new ResponseEntity<>(hotel, HttpStatus.OK);
+
+    }
+
+    // getting the hotel by the owner id
+
+    @GetMapping("/owner")
+    public ResponseEntity<Restaurant> getHotelByUserId(@RequestHeader("Authorization") String jwt, @RequestBody CreateRestaurantRequest req) throws Exception{
+
+        User user = userService.findUserByJwt(jwt);
+        Restaurant hotel = restaurantService.getRestaurantByUserId(user.getId());
+        return new ResponseEntity<>(hotel, HttpStatus.OK);
+    }
+    
+
+
 
 }
