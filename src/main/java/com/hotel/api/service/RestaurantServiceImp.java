@@ -27,6 +27,7 @@ public class RestaurantServiceImp implements RestaurantService {
     @Autowired
     private UserService userService;
 
+    // CREATING  A RESTAURANT
     @Override
     public Restaurant createRestaurant(CreateRestaurantRequest req, User user) {
 
@@ -48,11 +49,32 @@ public class RestaurantServiceImp implements RestaurantService {
 
     @Override
     public Restaurant updateRestaurant(UUID id, CreateRestaurantRequest updatedRequest) throws Exception {
-        return null;
+
+        // finding the restaurant by its id
+        Restaurant restaurant = findRestaurantById(id);
+
+        if(restaurant.getCuisineType() != null){
+            restaurant.setCuisineType(updatedRequest.getCuisineType());
+        }
+
+        if(restaurant.getDescription() != null){
+            restaurant.setDescription(updatedRequest.getDescription());
+        }
+
+        if(restaurant.getName()!=null){
+            restaurant.setName(updatedRequest.getName());
+        }
+
+
+
+        return restaurantRepo.save(restaurant);
     }
 
     @Override
     public void deleteRestaurant(UUID id) throws Exception {
+
+        Restaurant restaurant = findRestaurantById(id);
+
 
     }
 
