@@ -146,6 +146,8 @@ public class RestaurantServiceImp implements RestaurantService {
 
     @Override
     public Restaurant updateRestaurantStatus(UUID id) throws Exception {
-        return null;
+        Restaurant restaurant = findRestaurantById(id);
+        restaurant.setOpen(!restaurant.isOpen());
+        return restaurantRepo.save(restaurant);
     }
 }
