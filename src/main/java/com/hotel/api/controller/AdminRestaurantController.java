@@ -11,13 +11,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.util.UUID;
 
 // this file is for admins where they create restaurants, and do other admin stuff that concerns restaurants.
 @RestController
 @RequestMapping("/api/admin/restaurant")
 public class AdminRestaurantController {
+
+    private static final Logger logger = LoggerFactory.getLogger(AdminRestaurantController.class);
 
     @Autowired
     private RestaurantServiceImp restServiceImp;
@@ -33,6 +36,7 @@ public class AdminRestaurantController {
     public ResponseEntity<Restaurant> createHotel(@RequestBody CreateRestaurantRequest req, @RequestHeader("Authorization") String jwt) throws Exception {
 
         User user = userService.findUserByJwt(jwt);
+//        logger.info(user.getRole().toString());
         Restaurant hotel = restaurantService.createRestaurant(req, user);
 
 

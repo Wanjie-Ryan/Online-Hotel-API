@@ -1,8 +1,11 @@
 package com.hotel.api.config;
 
+import com.hotel.api.controller.AdminRestaurantController;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
@@ -15,6 +18,8 @@ import java.util.*;
 @Service
 public class JwtProvider {
 
+    private static final Logger logger = LoggerFactory.getLogger(JwtProvider.class);
+
     // Secret key used for signing the JWT token
     private SecretKey key = Keys.hmacShaKeyFor(JwtConstant.SECRET_KEY.getBytes(StandardCharsets.UTF_8));
 
@@ -25,6 +30,7 @@ public class JwtProvider {
 
         // Convert the roles to a comma-separated string
         String roles = populateAuthorities(authorities);
+//        logger.info(roles);
 
         // Create a JWT token with an expiration time of 24 hours
         String jwt = Jwts.builder()
@@ -32,6 +38,7 @@ public class JwtProvider {
                 .setExpiration(new Date(new Date().getTime() + 86400000)) // Set the expiration date
                 .claim("email", auth.getName()) // Add the email claim
                 .claim("authorities", roles) // Add the roles claim
+//                .claim("roles", roles)
                 .signWith(key) // Sign the token with the secret key
                 .compact(); // Build the token
 
@@ -62,7 +69,7 @@ public class JwtProvider {
 
         // Iterate through the authorities and add their string representations to the set
         for (GrantedAuthority authority : authorities) {
-            auths.add(authority.getAuthority());
+            auths.add("ROLE_" + authority.getAuthority());
         }
 
         // Join the set elements into a single string separated by commas
