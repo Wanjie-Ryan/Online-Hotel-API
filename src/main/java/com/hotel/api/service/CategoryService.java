@@ -8,7 +8,7 @@ import java.util.UUID;
 public interface CategoryService {
 
     // create a category
-    public Category createcategory(String name, UUID id);
+    public Category createcategory(String name, UUID id) throws Exception;
     public List<Category> findCategoryByHotelId(UUID id) throws Exception;
     public Category findCategoryById(UUID id) throws Exception;
 
