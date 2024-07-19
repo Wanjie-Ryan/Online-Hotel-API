@@ -9,6 +9,7 @@ import com.hotel.api.service.FoodService;
 import com.hotel.api.service.RestaurantService;
 import com.hotel.api.service.UserService;
 import jdk.jfr.consumer.RecordingStream;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -54,6 +55,16 @@ public class AdminFoodController {
 
         return new ResponseEntity<>(message, HttpStatus.OK);
 
+    }
+
+    @PutMapping("/{id")
+
+    public ResponseEntity<Food> updateFoodAvailabilityStatus(@PathVariable("id") UUID id, @RequestHeader("Authorization") String jwt)throws Exception{
+
+        User user = userService.findUserByJwt(jwt);
+        Food food = foodService.updateFoodAvailabilityStatus(id);
+
+        return new ResponseEntity<>(food, HttpStatus.OK);
     }
 
     @GetMapping("/search")
