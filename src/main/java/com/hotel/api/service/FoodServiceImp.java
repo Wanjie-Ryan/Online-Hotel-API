@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class FoodServiceImp implements FoodService {
@@ -41,6 +42,7 @@ public class FoodServiceImp implements FoodService {
     public void deleteFood(UUID id) throws Exception {
 
         Food food = findFoodById(id);
+        // from the food, remove the restaurant
         food.setRestaurant(null);
         foodRepo.delete(food);
 
@@ -48,7 +50,42 @@ public class FoodServiceImp implements FoodService {
 
     @Override
     public List<Food> getAllFoods(UUID id, boolean isVegetarian, boolean isSeasonal, String category, boolean available) {
-        return List.of();
+
+        List<Food> foods = foodRepo.findByRestaurantId(id);
+
+        if(isVegetarian){
+            // custom method to implement the filter by vegetarian
+            foods = filterByvegetarian(foods, isVegetarian);
+        }
+
+        if(isSeasonal){
+            foods = filterByseasonal(foods, isSeasonal);
+        }
+        if(category != null && !category.equals("")){
+            foods= filterByCategory(foods, category);
+        }
+
+
+
+        return foods;
+    }
+
+    private List<Food> filterByCategory(List<Food> foods, String category) {
+        // if we want to apply filters then use streams
+        return foods.stream().filter(food->{
+            if(food.getFoodCategory()!=null){
+                return food.getFoodCategory().getName().equals(category);
+            }
+            return false;
+        }).collect(Collectors.toList());
+    }
+
+    private List<Food> filterByseasonal(List<Food> foods, boolean isSeasonal) {
+        return foods.stream().filter(food ->food.isSeasonal() == isSeasonal).collect(Collectors.toList());
+    }
+
+    private List<Food> filterByvegetarian(List<Food> foods, boolean isVegetarian) {
+        return foods.stream().filter(food -> food.isVegetarian() == isVegetarian).collect(Collectors.toList());
     }
 
     @Override
